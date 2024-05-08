@@ -1,110 +1,57 @@
 # Sonido estéreo y ficheros WAVE
 
-## Nom i cognoms
+#### Nom i cognoms: Ona Bonastre
 
 ## El formato WAVE
 
-El formato WAVE es uno de los más extendidos para el almacenamiento y transmisión
-de señales de audio. En el fondo, se trata de un tipo particular de fichero
-[RIFF](https://en.wikipedia.org/wiki/Resource_Interchange_File_Format) (*Resource
-Interchange File Format*), utilizado no sólo para señales de audio sino también para señales de
-otros tipos, como las imágenes estáticas o en movimiento, o secuencias MIDI (aunque, en el caso
-del MIDI, con pequeñas diferencias que los hacen incompatibles).
+El formato WAVE es uno de los más extendidos para el almacenamiento y transmisión de señales de audio. En el fondo, se trata de un tipo particular de fichero [RIFF](https://en.wikipedia.org/wiki/Resource_Interchange_File_Format) (*Resource Interchange File Format*), utilizado no sólo para señales de audio sino también para señales de otros tipos, como las imágenes estáticas o en movimiento, o secuencias MIDI (aunque, en el caso del MIDI, con pequeñas diferencias que los hacen incompatibles).
 
-La base de los ficheros RIFF es el uso de *cachos* (*chunks*, en inglés). Cada cacho,
-o subcacho, está encabezado por una cadena de cuatro caracteres ASCII, que indica el tipo del cacho,
-seguido por un entero sin signo de cuatro bytes, que indica el tamaño en bytes de lo que queda de
-cacho sin contar la cadena inicial y el propio tamaño. A continuación, y en función del tipo de
-cacho, se colocan los datos que lo forman.
+La base de los ficheros RIFF es el uso de *cachos* (*chunks*, en inglés). Cada cacho, o subcacho, está encabezado por una cadena de cuatro caracteres ASCII, que indica el tipo del cacho, seguido por un entero sin signo de cuatro bytes, que indica el tamaño en bytes de lo que queda de cacho sin contar la cadena inicial y el propio tamaño. A continuación, y en función del tipo de cacho, se colocan los datos que lo forman.
 
-Todo fichero RIFF incluye un primer cacho que lo identifica como tal y que empieza por la cadena
-`'RIFF'`. A continuación, después del tamaño del cacho y en otra cadena de cuatro caracteres,
-se indica el tipo concreto de información que contiene el fichero. En el caso concreto de los
-ficheros de audio WAVE, esta cadena es igual a `'WAVE'`, y el cacho debe contener dos
-*subcachos*: el primero, de nombre `'fmt '`, proporciona la información de cómo está
-codificada la señal. Por ejemplo, si es PCM lineal, ADPCM, etc., o si es monofónica o estéreo. El
-segundo subcacho, de nombre `'data'`, incluye las muestras de la señal.
+Todo fichero RIFF incluye un primer cacho que lo identifica como tal y que empieza por la cadena `'RIFF'`. A continuación, después del tamaño del cacho y en otra cadena de cuatro caracteres, se indica el tipo concreto de información que contiene el fichero. En el caso concreto de los ficheros de audio WAVE, esta cadena es igual a `'WAVE'`, y el cacho debe contener dos *subcachos*: el primero, de nombre `'fmt '`, proporciona la información de cómo está
+codificada la señal. Por ejemplo, si es PCM lineal, ADPCM, etc., o si es monofónica o estéreo. El segundo subcacho, de nombre `'data'`, incluye las muestras de la señal.
 
-Dispone de una descripción detallada del formato WAVE en la página
-[WAVE PCM soundfile format](http://soundfile.sapp.org/doc/WaveFormat/) de Soundfile.
+Dispone de una descripción detallada del formato WAVE en la página [WAVE PCM soundfile format](http://soundfile.sapp.org/doc/WaveFormat/) de Soundfile.
 
 ## Audio estéreo
 
-La mayor parte de los animales, incluidos los del género *homo sapiens sapiens* sanos y completos,
-están dotados de dos órganos que actúan como transductores acústico-sensoriales (es decir, tienen dos
-*oídos*). Esta duplicidad orgánica permite al bicho, entre otras cosas, determinar la dirección de
-origen del sonido. En el caso de la señal de música, además, la duplicidad proporciona una sensación
-de *amplitud espacial*, de realismo y de confort acústico.
+La mayor parte de los animales, incluidos los del género *homo sapiens sapiens* sanos y completos, están dotados de dos órganos que actúan como transductores cústico-sensoriales (es decir, tienen dos *oídos*). Esta duplicidad orgánica permite al bicho, entre otras cosas, determinar la dirección de origen del sonido. En el caso de la señal de música, además, la duplicidad proporciona una sensación de *amplitud espacial*, de realismo y de confort acústico.
 
-En un principio, los equipos de reproducción de audio no tenían en cuenta estos efectos y sólo permitían
-almacenar y reproducir una única señal para los dos oídos. Es el llamado *sonido monofónico* o
-*monoaural*. Una alternativa al sonido monofónico es el *estereofónico* o, simplemente, *estéreo*. En
-él, se usan dos señales independientes, destinadas a ser reproducidas a ambos lados del oyente: los
-llamados *canal izquierdo* (**L**) y *derecho* (**R**).
+En un principio, los equipos de reproducción de audio no tenían en cuenta estos efectos y sólo permitían almacenar y reproducir una única señal para los dos oídos. Es el llamado *sonido monofónico* o *monoaural*. Una alternativa al sonido monofónico es el *estereofónico* o, simplemente, *estéreo*. En él, se usan dos señales independientes, destinadas a ser reproducidas a ambos lados del oyente: los llamados *canal izquierdo* (**L**) y *derecho* (**R**).
 
-Aunque los primeros experimentos con sonido estereofónico datan de finales del siglo XIX, los primeros
-equipos y grabaciones de este tipo no se popularizaron hasta los años 1950 y 1960. En aquel tiempo, la
-gestión de los dos canales era muy rudimentaria. Por ejemplo, los instrumentos se repartían entre los
-dos canales, con unos sonando exclusivamente a la izquierda y el resto a la derecha. Es el caso de las
-primeras grabaciones en estéreo de los Beatles: las versiones en alemán de los singles *She loves you*
-y *I want to hold your hand*. Así, en esta última (de la que dispone de un fichero en Atenea con sus
-primeros treinta segundos, [Komm, gib mir deine Hand](wav/komm.wav)), la mayor parte de los instrumentos
-suenan por el canal derecho, mientras que las voces y las características palmas lo hacen por el izquierdo.
+Aunque los primeros experimentos con sonido estereofónico datan de finales del siglo XIX, los primeros equipos y grabaciones de este tipo no se popularizaron hasta los años 1950 y 1960. En aquel tiempo, la gestión de los dos canales era muy rudimentaria. Por ejemplo, los instrumentos se repartían entre los dos canales, con unos sonando exclusivamente a la izquierda y el resto a la derecha. Es el caso de las primeras grabaciones en estéreo de los Beatles: las versiones en alemán de los singles *She loves you* y *I want to hold your hand*. Así, en esta última (de la que dispone de un fichero en Atenea con sus primeros treinta segundos, [Komm, gib mir deine Hand](wav/komm.wav)), la mayor parte de los instrumentos suenan por el canal derecho, mientras que las voces y las características palmas lo hacen por el izquierdo.
 
-Un problema habitual en los primeros años del sonido estereofónico, y aún vigente hoy en día, es que no
-todos los equipos son capaces de reproducir los dos canales por separado. La solución comúnmente
-adoptada consiste en no almacenar cada canal por separado, sino en la forma semisuma, $(L+R)/2$, y
-semidiferencia, $(L-R)/2$, y de tal modo que los equipos monofónicos sólo accedan a la primera de ellas.
-De este modo, estos equipos pueden reproducir una señal completa, formada por la suma de los dos
-canales, y los estereofónicos pueden reconstruir los dos canales estéreo.
+Un problema habitual en los primeros años del sonido estereofónico, y aún vigente hoy en día, es que no todos los equipos son capaces de reproducir los dos canales por separado. La solución comúnmente adoptada consiste en no almacenar cada canal por separado, sino en la forma semisuma, $(L+R)/2$, y semidiferencia, $(L-R)/2$, y de tal modo que los equipos monofónicos sólo accedan a la primera de ellas. De este modo, estos equipos pueden reproducir una señal completa, formada por la suma de los dos canales, y los estereofónicos pueden reconstruir los dos canales estéreo.
 
 Por ejemplo, en la radio FM estéreo, la señal, de ancho de banda 15 kHz, se transmite del modo siguiente:
 
-- En banda base, $0\le f\le 15$ kHz, se transmite la suma de los dos canales, $L+R$. Esta es la señal
-  que son capaces de reproducir los equipos monofónicos.
+- En banda base, $0\le f\le 15$ kHz, se transmite la suma de los dos canales, $L+R$. Esta es la señal que son capaces de reproducir los equipos monofónicos.
 
-- La señal diferencia, $L-R$, se transmite modulada en amplitud con una frecuencia de portadora
-  $f_m = 38$ kHz.
+- La señal diferencia, $L-R$, se transmite modulada en amplitud con una frecuencia de portadora $f_m = 38$ kHz.
 
-  - Por tanto, ocupa la banda $23 \mathrm{kHz}\le f\le 53 \mathrm{kHz}$, que sólo es accedida por los
-    equipos estéreo, y, en el caso de colarse en un reproductor monofónico, ocupa la banda no audible.
+  - Por tanto, ocupa la banda $23 \mathrm{kHz}\le f\le 53 \mathrm{kHz}$, que sólo es accedida por los equipos estéreo, y, en el caso de colarse en un reproductor monofónico, ocupa la banda no audible.
 
-- También se emite una sinusoide de $19 \mathrm{kHz}$, denominada *señal piloto*, que se usa para
-  demodular síncronamente la señal diferencia.
+- También se emite una sinusoide de $19 \mathrm{kHz}$, denominada *señal piloto*, que se usa para demodular síncronamente la señal diferencia.
 
-- Finalmente, la señal de audio estéreo puede acompañarse de otras señales de señalización y servicio en
-  frecuencias entre $55.35 \mathrm{kHz}$ y $94 \mathrm{kHz}$.
+- Finalmente, la señal de audio estéreo puede acompañarse de otras señales de señalización y servicio en frecuencias entre $55.35 \mathrm{kHz}$ y $94 \mathrm{kHz}$.
 
-En los discos fonográficos, la semisuma de las señales está grabada del mismo modo que se haría en una
-grabación monofónica, es decir, en la profundidad del surco; mientras que la semidiferencia se graba en el
-desplazamiento a izquierda y derecha de la aguja. El resultado es que un reproductor mono, que sólo atiende
-a la profundidad del surco, reproduce casi correctamente la señal monofónica, mientras que un reproductor
-estéreo es capaz de separar los dos canales. Es posible que algo de la información de la semisuma se cuele
-en el reproductor mono, pero, como su amplitud es muy pequeña, se manifestará como un ruido muy débil,
-apenas perceptible.
+En los discos fonográficos, la semisuma de las señales está grabada del mismo modo que se haría en una grabación monofónica, es decir, en la profundidad del surco; mientras que la semidiferencia se graba en el desplazamiento a izquierda y derecha de la aguja. El resultado es que un reproductor mono, que sólo atiende a la profundidad del surco, reproduce casi correctamente la señal monofónica, mientras que un reproductor estéreo es capaz de separar los dos canales. Es posible que algo de la información de la semisuma se cuele en el reproductor mono, pero, como su amplitud es muy pequeña, se manifestará como un ruido muy débil, apenas perceptible.
 
-En general, todos estos sistemas se basan en garantizar que el reproductor mono recibe correctamente la
-semisuma de canales y que, si algo de la semidiferencia se cuela en la reproducción, sea en forma de un
-ruido inaudible.
+En general, todos estos sistemas se basan en garantizar que el reproductor mono recibe correctamente la semisuma de canales y que, si algo de la semidiferencia se cuela en la reproducción, sea en forma de un ruido inaudible.
 
 ## Tareas a realizar
 
-Escriba el fichero `estereo.py` que incluirá las funciones que permitirán el manejo de los canales de una
-señal estéreo y su codificación/decodificación para compatibilizar ésta con sistemas monofónicos.
+Escriba el fichero `estereo.py` que incluirá las funciones que permitirán el manejo de los canales de una señal estéreo y su codificación/decodificación para compatibilizar ésta con sistemas monofónicos.
 
 ### Manejo de los canales de una señal estéreo
 
-En un fichero WAVE estéreo con señales de 16 bits, cada muestra de cada canal se codifica con un entero de
-dos bytes. La señal se almacena en el *cacho* `'data'` alternando, para cada muestra de $x[n]$, el valor
-del canal izquierdo y el derecho:
+En un fichero WAVE estéreo con señales de 16 bits, cada muestra de cada canal se codifica con un entero de dos bytes. La señal se almacena en el *cacho* `'data'` alternando, para cada muestra de $x[n]$, el valor del canal izquierdo y el derecho:
 
 <img src="img/est%C3%A9reo.png" width="380px">
 
 #### Función `estereo2mono(ficEste, ficMono, canal=2)`
 
-La función lee el fichero `ficEste`, que debe contener una señal estéreo, y escribe el fichero `ficMono`,
-con una señal monofónica. El tipo concreto de señal que se almacenará en `ficMono` depende del argumento
-`canal`:
+La función lee el fichero `ficEste`, que debe contener una señal estéreo, y escribe el fichero `ficMono`, con una señal monofónica. El tipo concreto de señal que se almacenará en `ficMono` depende del argumento `canal`:
 
 - `canal=0`: Se almacena el canal izquierdo $L$.
 - `canal=1`: Se almacena el canal derecho $R$.
