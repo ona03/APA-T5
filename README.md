@@ -8,8 +8,7 @@ El formato WAVE es uno de los más extendidos para el almacenamiento y transmisi
 
 La base de los ficheros RIFF es el uso de *cachos* (*chunks*, en inglés). Cada cacho, o subcacho, está encabezado por una cadena de cuatro caracteres ASCII, que indica el tipo del cacho, seguido por un entero sin signo de cuatro bytes, que indica el tamaño en bytes de lo que queda de cacho sin contar la cadena inicial y el propio tamaño. A continuación, y en función del tipo de cacho, se colocan los datos que lo forman.
 
-Todo fichero RIFF incluye un primer cacho que lo identifica como tal y que empieza por la cadena `'RIFF'`. A continuación, después del tamaño del cacho y en otra cadena de cuatro caracteres, se indica el tipo concreto de información que contiene el fichero. En el caso concreto de los ficheros de audio WAVE, esta cadena es igual a `'WAVE'`, y el cacho debe contener dos *subcachos*: el primero, de nombre `'fmt '`, proporciona la información de cómo está
-codificada la señal. Por ejemplo, si es PCM lineal, ADPCM, etc., o si es monofónica o estéreo. El segundo subcacho, de nombre `'data'`, incluye las muestras de la señal.
+Todo fichero RIFF incluye un primer cacho que lo identifica como tal y que empieza por la cadena `'RIFF'`. A continuación, después del tamaño del cacho y en otra cadena de cuatro caracteres, se indica el tipo concreto de información que contiene el fichero. En el caso concreto de los ficheros de audio WAVE, esta cadena es igual a `'WAVE'`, y el cacho debe contener dos *subcachos*: el primero, de nombre `'fmt '`, proporciona la información de cómo está codificada la señal. Por ejemplo, si es PCM lineal, ADPCM, etc., o si es monofónica o estéreo. El segundo subcacho, de nombre `'data'`, incluye las muestras de la señal.
 
 Dispone de una descripción detallada del formato WAVE en la página [WAVE PCM soundfile format](http://soundfile.sapp.org/doc/WaveFormat/) de Soundfile.
 
@@ -90,8 +89,7 @@ Lee el fichero \python{ficCod} con una señal monofónica de 32 bits en la que l
 
 - El fichero debe incluir una cadena de documentación que incluirá el nombre del alumno y una descripción del contenido del fichero.
 
-- Es muy recomendable escribir, además, sendas funciones que *empaqueten* y *desempaqueten* las cabeceras
-  de los ficheros WAVE a partir de los datos contenidos en ellas.
+- Es muy recomendable escribir, además, sendas funciones que *empaqueten* y *desempaqueten* las cabeceras de los ficheros WAVE a partir de los datos contenidos en ellas.
 
 - Aparte de `struct`, no se puede importar o usar ningún módulo externo.
 
@@ -99,39 +97,132 @@ Lee el fichero \python{ficCod} con una señal monofónica de 32 bits en la que l
 
 - Los ficheros se deben abrir y cerrar usando gestores de contexto.
 
-- Las funciones deberán comprobar que los ficheros de entrada tienen el formato correcto y, en caso
-  contrario, elevar la excepción correspondiente.
+- Las funciones deberán comprobar que los ficheros de entrada tienen el formato correcto y, en caso contrario, elevar la excepción correspondiente.
 
-- Los ficheros resultantes deben ser reproducibles correctamente usando cualquier reproductor estándar;
-  por ejemplo, el Windows Media Player o similar. Es probable, muy probable, que tenga que modificar los  datos de las cabeceras de los ficheros para conseguirlo.
+- Los ficheros resultantes deben ser reproducibles correctamente usando cualquier reproductor estándar;  por ejemplo, el Windows Media Player o similar. Es probable, muy probable, que tenga que modificar los  datos de las cabeceras de los ficheros para conseguirlo.
 
-- Se valorará lo pythónico de la solución; en concreto, su claridad y sencillez, y el uso de los estándares
-  marcados por PEP-ocho.
+- Se valorará lo pythónico de la solución; en concreto, su claridad y sencillez, y el uso de los estándares marcados por PEP-ocho.
 
 #### Comprobación del funcionamiento
 
-Es responsabilidad del alumno comprobar que las distintas funciones realizan su cometido de manera correcta.
-Para ello, se recomienda usar la canción [Komm, gib mir deine Hand](wav/komm.wav), suminstrada al efecto.
-De todos modos, recuerde que, aunque sea en alemán, se trata de los Beatles, así que procure no destrozar
-innecesariamente la canción.
+Es responsabilidad del alumno comprobar que las distintas funciones realizan su cometido de manera correcta. Para ello, se recomienda usar la canción [Komm, gib mir deine Hand](wav/komm.wav), suminstrada al efecto. De todos modos, recuerde que, aunque sea en alemán, se trata de los Beatles, así que procure no destrozar innecesariamente la canción.
 
 #### Código desarrollado
 
-Inserte a continuación el código de los métodos desarrollados en esta tarea, usando los comandos necesarios
-para que se realice el realce sintáctico en Python del mismo (no vale insertar una imagen o una captura de
-pantalla, debe hacerse en formato *markdown*).
+Inserte a continuación el código de los métodos desarrollados en esta tarea, usando los comandos necesarios para que se realice el realce sintáctico en Python del mismo (no vale insertar una imagen o una captura de pantalla, debe hacerse en formato *markdown*).
+
+##### Código de `leer_datos()`
+```py
+def leer_datos(fichero, num_canales):
+    with open(fichero, 'rb') as fp_fichero:
+        cabecera = fp_fichero.read(44)
+        (riff, riff_size, wave, fmt, fmt_size, audio_format, n_channels, sample_rate, byte_rate, 
+         block_align, bits_per_sample, data_id, data_size) = st.unpack(formato_cabecera, cabecera)
+        
+        cabecera = [riff, riff_size, wave, fmt, fmt_size, audio_format, n_channels, sample_rate, 
+                    byte_rate, block_align, bits_per_sample, data_id, data_size]
+        
+        if n_channels != num_canales:
+            raise ValueError("El archivo debe ser estéreo.")
+        
+        if riff != b"RIFF" or wave != b"WAVE":
+            raise TypeError("File '{fp_estereo}' is not WAV file")
+        
+        data = fp_fichero.read(data_size)
+
+        formato_datos = f'<{data_size // (bits_per_sample // 8)}h'
+        datos = st.unpack(formato_datos, data)
+
+    return cabecera, datos
+```
+
+##### Código de `escribir_fichero()`
+```py
+def escribir_fichero(fichero_out, n_channels, canal, cabecera, datos):
+    with open(fichero_out, 'wb') as fp_out:
+        if canal == 2 or canal == 3:
+            cabecera[7] *= 2 
+        byte_rate = cabecera[7] * n_channels * cabecera[10] // 8
+        block_align = n_channels * cabecera[10] // 8
+        data_size = len(datos) * (cabecera[10] // 8)
+        riff_size = 36 + data_size
+
+        nueva_cabecera = st.pack(formato_cabecera, cabecera[0], riff_size, cabecera[2], cabecera[3], cabecera[4], cabecera[5], 
+                                 n_channels, cabecera[7], byte_rate, block_align, cabecera[10], cabecera[11], data_size)
+        
+        fp_out.write(nueva_cabecera)
+
+        formato_out = f'<{len(datos)}h'
+        datos_packed = st.pack(formato_out, *datos)
+        fp_out.write(datos_packed)
+```
 
 ##### Código de `estereo2mono()`
+```py
+def estereo2mono(ficEste, ficMono, canal=2):
+    cabecera, datos_estereo = leer_datos(ficEste, 2)
+
+    datos_mono = []
+    if canal == 0:
+        # Canal izquierdo
+        datos_mono = datos_estereo[0::2]
+    elif canal == 1:
+        # Canal derecho
+        datos_mono = datos_estereo[1::2]
+    elif canal == 2:
+        # Promedio de ambos canales
+        datos_mono = [(datos_estereo[i] + datos_estereo[i + 2]) // 2 for i in range(0, len(datos_estereo)-2)]
+    elif canal == 3:
+        # Diferencia entre ambos canales
+        datos_mono = [(datos_estereo[i] - datos_estereo[i + 2]) // 2 for i in range(0, len(datos_estereo)-2)]
+    else:
+        raise ValueError("Canal inválido. Debe ser 0, 1, 2 o 3.")
+    
+    escribir_fichero(ficMono, 1, canal, cabecera, datos_mono)
+```
 
 ##### Código de `mono2estereo()`
+```py
+def mono2estereo(ficIzq, ficDer, ficEste):
+    cabeceraI, datos_Izq = leer_datos(ficIzq, 1)
+    cabeceraD, datos_Der = leer_datos(ficDer, 1)
+
+    if cabeceraI[7] != cabeceraD[7] or cabeceraI[10] != cabeceraD[10]:
+        raise ValueError("Ambos archivos mono deben tener los mismos parámetros de audio.")
+    
+    if cabeceraI[5] != 16 or cabeceraD[5] != 16 or cabeceraI[6] != 1 or cabeceraD[6] != 1:
+        raise ValueError("Ambos archivos mono deben estar codificados con PCM lineal con 16 bits.")
+
+    datos_estereo = []
+    for mostraI, mostraD in zip(datos_Izq, datos_Der):
+        datos_estereo.append(mostraI)
+        datos_estereo.append(mostraD)
+
+    escribir_fichero(ficEste, 2, -1, cabeceraI, datos_estereo)
+```
 
 ##### Código de `codEstereo()`
+```py
+def codEstereo(ficEste, ficCod):
+    canalIz = "APA-T5\wav\semisuma_estereo.wav"
+    canalDer = "APA-T5\wav\semidiferencia_estereo.wav"
+    estereo2mono(ficEste, canalIz, 2)
+    estereo2mono(ficEste, canalDer, 3)
+    mono2estereo(canalIz, canalDer, ficCod)
+```
 
 ##### Código de `decEstereo()`
+```py
+def decEstereo(ficCod, ficEste):
+    ficCod_monoI = "APA-T5\wav\ficCod_monoI.wav"
+    ficCod_monoD = "APA-T5\wav\ficCod_monoD.wav"
+    estereo2mono(ficCod, ficCod_monoI, 0)
+    estereo2mono(ficCod, ficCod_monoD, 1)
+    mono2estereo(ficCod_monoI, ficCod_monoD, ficEste)
+```
 
 #### Subida del resultado al repositorio GitHub y *pull-request*
 
 La entrega se formalizará mediante *pull request* al repositorio de la tarea.
 
-El fichero `README.md` deberá respetar las reglas de los ficheros Markdown y visualizarse correctamente en
-el repositorio, incluyendo el realce sintáctico del código fuente insertado.
+El fichero `README.md` deberá respetar las reglas de los ficheros Markdown y visualizarse correctamente en el repositorio, incluyendo el realce sintáctico del código fuente insertado.
