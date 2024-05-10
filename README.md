@@ -60,48 +60,35 @@ La función lee el fichero `ficEste`, que debe contener una señal estéreo, y e
 
 #### Función `mono2estereo(ficIzq, ficDer, ficEste)`
 
-Lee los ficheros `ficIzq` y `ficDer`, que contienen las señales monofónicas correspondientes a los canales
-izquierdo y derecho, respectivamente, y construye con ellas una señal estéreo que almacena en el fichero
-`ficEste`.
+Lee los ficheros `ficIzq` y `ficDer`, que contienen las señales monofónicas correspondientes a los canales izquierdo y derecho, respectivamente, y construye con ellas una señal estéreo que almacena en el fichero `ficEste`.
 
 ### Codificación estéreo usando los bits menos significativos
 
-En la línea de los sistemas usados para codificar la información estéreo en señales de radio FM o en los
-surcos de los discos fonográficos, podemos usar enteros de 32 bits para almacenar los dos canales de 16 bits:
+En la línea de los sistemas usados para codificar la información estéreo en señales de radio FM o en los surcos de los discos fonográficos, podemos usar enteros de 32 bits para almacenar los dos canales de 16 bits:
 
 - En los 16 bits más significativos se almacena la semisuma de los dos canales.
 
 - En los 16 bits menos significativos se almacena la semidiferencia.
 
-Los sistemas monofónicos sólo son capaces de manejar la señal de 32 bits. Esta señal es prácticamente
-idéntica a la señal semisuma, ya que la semisuma ocupa los 16 bits más significativos. La señal
-semidiferencia aparece como un ruido añadido a la señal, pero, como su amplitud es $2^{16}$ veces más
-pequeña, será prácticamente inaudible (la relación señal a ruido es del orden de 90 dB).
+Los sistemas monofónicos sólo son capaces de manejar la señal de 32 bits. Esta señal es prácticamente idéntica a la señal semisuma, ya que la semisuma ocupa los 16 bits más significativos. La señal semidiferencia aparece como un ruido añadido a la señal, pero, como su amplitud es $2^{16}$ veces más pequeña, será prácticamente inaudible (la relación señal a ruido es del orden de 90 dB).
 
-Los sistemas estéreo son capaces de aislar las dos partes de la señal y, con ellas, reconstruir los dos
-canales izquierdo y derecho.
+Los sistemas estéreo son capaces de aislar las dos partes de la señal y, con ellas, reconstruir los dos canales izquierdo y derecho.
 
 <img src="img/est%C3%A9reo_cod.png" width="510px">
 
 #### Función `codEstereo(ficEste, ficCod)`
 
-Lee el fichero \python{ficEste}, que contiene una señal estéreo codificada con PCM lineal de 16 bits, y
-construye con ellas una señal codificada con 32 bits que permita su reproducción tanto por sistemas
-monofónicos como por sistemas estéreo preparados para ello.
+Lee el fichero \python{ficEste}, que contiene una señal estéreo codificada con PCM lineal de 16 bits, y construye con ellas una señal codificada con 32 bits que permita su reproducción tanto por sistemas monofónicos como por sistemas estéreo preparados para ello.
 
 #### Función `decEstereo(ficCod, ficEste)`
 
-Lee el fichero \python{ficCod} con una señal monofónica de 32 bits en la que los 16 bits más significativos
-contienen la semisuma de los dos canales de una señal estéreo y los 16 bits menos significativos la
-semidiferencia, y escribe el fichero \python{ficEste} con los dos canales por separado en el formato de los
-ficheros WAVE estéreo.
+Lee el fichero \python{ficCod} con una señal monofónica de 32 bits en la que los 16 bits más significativos contienen la semisuma de los dos canales de una señal estéreo y los 16 bits menos significativos la semidiferencia, y escribe el fichero \python{ficEste} con los dos canales por separado en el formato de los ficheros WAVE estéreo.
 
 ### Entrega
 
 #### Fichero `estereo.py`
 
-- El fichero debe incluir una cadena de documentación que incluirá el nombre del alumno y una descripción
-  del contenido del fichero.
+- El fichero debe incluir una cadena de documentación que incluirá el nombre del alumno y una descripción del contenido del fichero.
 
 - Es muy recomendable escribir, además, sendas funciones que *empaqueten* y *desempaqueten* las cabeceras
   de los ficheros WAVE a partir de los datos contenidos en ellas.
